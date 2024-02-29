@@ -35,14 +35,7 @@ public class Lexico {
 
     private char nextChar() {
         try {
-            char lido = (char) br.read();
-            if (lido == '\n') {
-                line++;
-                column = 1;
-            } else {
-                column++;
-            }
-            return lido;  
+            return (char) br.read();
         } catch (IOException e) {
             System.err.println("Não foi possível ler do arquivo: " + filename);
             e.printStackTrace();
@@ -53,33 +46,156 @@ public class Lexico {
     }
 
     public Token nextToken() {
+        do{
         lexeme.setLength(0);
         if (Character.isLetter(character)) {
-            token = new Token(line, column-1);
+            token = new Token(line, column);
             lexeme.append(character);
             character = nextChar();
+            column++;
             while (Character.isLetterOrDigit(character)) {
                 lexeme.append(character);
                 character = nextChar();
+                column++;
             }
             token.setClasse(Classe.identificador);
             token.setValor(new Valor(lexeme.toString()));
             return token;
+        } else if(character == '\n'){
+            character = nextChar();
+            line++;
+            column = 1;
         } else if (Character.isDigit(character)) {
-            token = new Token(line, column-1);
+            token = new Token(line, column);
             lexeme.append(character);
             character = nextChar();
+            column++;
             while(Character.isDigit(character)){
                 lexeme.append(character);
                 character = nextChar();
+                column++;
             }
             token.setClasse(Classe.identificador);
             token.setValor(new Valor(Integer.parseInt(lexeme.toString())));
             return token;
-        }else{
+        }else if( Character.isWhitespace(character)){
             character = nextChar();
-            return null;
+            column++;
+        }else if(character == '\t'){
+            character = nextChar();
+            column = column + 4;
+        } else if(character == '.'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.ponto);
+            return token;
+        } else if(character == ';'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.pontoEVirgula);
+            return token;
+        } else if(character == ','){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.virgula);
+            return token;
+        } else if(character == '+'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.operadorSoma);
+            return token;
+        } else if(character == '-'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.operadorSubtracao);
+            return token;
+        } else if(character == '*'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.operadorMultiplicacao);
+            return token;
+        } else if(character == '/'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.operadorDivisao);
+            return token;
+        } else if(character == '>'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            if(character == '='){
+                lexeme.append(character);
+                character = nextChar();
+                column++;
+                token.setClasse(Classe.operadorMaiorIgual);
+            } else {
+                token.setClasse(Classe.operadorMaior);
+            }
+        } else if(character == ':'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            if(character == '='){
+                lexeme.append(character);
+                character = nextChar();
+                column++;
+                token.setClasse(Classe.atribuicao);
+            } else {
+                token.setClasse(Classe.doisPontos);
+            }
+            return token;
+        } else if(character == '<'){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            if(character == '='){
+                lexeme.append(character);
+                character = nextChar();
+                column++;
+                token.setClasse(Classe.operadorMenorIgual);
+            }else if(character == '>'){
+                lexeme.append(character);
+                character = nextChar();
+                column++;
+                token.setClasse(Classe.operadorDiferente);
+            } else {
+                token.setClasse(Classe.operadorMenor);
+            }
+            return token;
         }
+        else if(character == '='){
+            token = new Token(line, column);
+            lexeme.append(character);
+            character = nextChar();
+            column++;
+            token.setClasse(Classe.atribuicao);
+            return token;
+        } else if(character == 65535){
+            return new Token(line, column, Classe.EOF);
+        } else {
+            System.err.println("Erro na linha " + line + " e coluna " + column + ": caracter inválido");
+            System.exit(-1);
+        }
+        
+    }while(character != 65535);
+    return new Token(line, column, Classe.EOF);
         // } else if (Character.isWhitespace(character)) {
         //     System.out.println("Espaço");
         // } else if (character == '.') {

@@ -10,15 +10,19 @@ public enum Classe {
     operadorDivisao,
     operadorMaior,
     operadorMenor,
+
     operadorMaiorIgual,
     operadorMenorIgual,
-    operadorIgual,
-    operadorDiferente,
-    operadorE,
-    operadorOu,
-    operadorNegacao,
-    atribuicao,
-    pontoEVirgula,
+
+    operadorIgual, // =
+    operadorDiferente, // <>
+    operadorE, // and
+    operadorOu, // or
+    operadorNegacao, // not
+    atribuicao, // :=
+    pontoEVirgula, // 
     virgula,
+    ponto,
+    doisPontos,
     EOF
 }
