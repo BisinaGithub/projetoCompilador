@@ -1,2 +1,2 @@
-1 udud := eidi and asdff et egg or  not asd     {asudaudauasdasd}
+1 udud =  {asudaudauasdasd} 'StringNormal' ' '
 2sda:6

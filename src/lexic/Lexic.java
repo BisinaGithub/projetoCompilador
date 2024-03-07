@@ -1,4 +1,4 @@
-package lexico;
+package lexic;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Lexico {
+public class Lexic {
 
     private String filename;
     private Token token;
@@ -19,7 +19,7 @@ public class Lexico {
     private int line;
     private int column;
 
-    public Lexico(String filename) {
+    public Lexic(String filename) {
         this.filename = filename;
         String filepath = Paths.get(filename).toAbsolutePath().toString();
         try {
@@ -50,11 +50,11 @@ public class Lexico {
     public boolean isReservedWord(String lexeme) {
         List<String> reservedWords = new ArrayList<String>(Arrays.asList(
                 "and", "array", "begin", "case", "const",
-                "div", "do", "downto", "else", "end",
+                "div", "do", "downto", "else", "end", "write",
                 "file", "for", "function", "goto", "if",
-                "in", "label", "mod", "nil", "not",
+                "in", "label", "mod", "nil", "not", "writeln",
                 "of", "or", "packed", "procedure", "program",
-                "record", "repeat", "set", "then", "to",
+                "record", "repeat", "set", "then", "to", "read",
                 "type", "until", "var", "while", "with",
                 "integer", "real", "boolean", "char", "string"));
         return reservedWords.contains(lexeme);
@@ -64,7 +64,7 @@ public class Lexico {
         do {
             lexeme.setLength(0);
             if (character == 65535) {
-                return new Token(line, column, Classe.EOF);
+                return new Token(line, column, Class.EOF);
             } else if (character == '{') {
                 character = nextChar();
                 column++;
@@ -83,6 +83,28 @@ public class Lexico {
                 }
                 character = nextChar();
                 column++;
+            } else if(character == '\''){
+                token = new Token(line, column);
+                character = nextChar();
+                column++;
+                while (character != '\'') {
+                    if (character == 65535) {
+                        System.err.println("Erro na linha " + line + " e coluna " + column + ": string não fechada");
+                        System.exit(-1);
+                    } else if (character == '\n') {
+                        System.err.println("Erro na linha " + line + " e coluna " + column + ": string em múltiplas linhas");
+                        System.exit(-1);
+                    } else {
+                        lexeme.append(character);
+                        character = nextChar();
+                        column++;
+                    }
+                }
+                character = nextChar();
+                column++;
+                token.setClasse(Class.String);
+                token.setValue(new Value(lexeme.toString()));
+                return token;
             } else if (Character.isLetter(character)) {
                 token = new Token(line, column);
                 lexeme.append(character);
@@ -94,11 +116,11 @@ public class Lexico {
                     column++;
                 }
                 if (isReservedWord(lexeme.toString())) {
-                    token.setClasse(Classe.palavraReservada);
-                    token.setValor(new Valor(lexeme.toString()));
+                    token.setClasse(Class.reservedWord);
+                    token.setValue(new Value(lexeme.toString()));
                 } else {
-                    token.setClasse(Classe.identificador);
-                    token.setValor(new Valor(lexeme.toString()));
+                    token.setClasse(Class.identifier);
+                    token.setValue(new Value(lexeme.toString()));
                 }
                 return token;
             } else if (character == '\n') {
@@ -115,8 +137,8 @@ public class Lexico {
                     character = nextChar();
                     column++;
                 }
-                token.setClasse(Classe.identificador);
-                token.setValor(new Valor(Integer.parseInt(lexeme.toString())));
+                token.setClasse(Class.identifier);
+                token.setValue(new Value(Integer.parseInt(lexeme.toString())));
                 return token;
             } else if (Character.isWhitespace(character)) {
                 character = nextChar();
@@ -129,49 +151,49 @@ public class Lexico {
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.ponto);
+                token.setClasse(Class.dot);
                 return token;
             } else if (character == ';') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.pontoEVirgula);
+                token.setClasse(Class.semicolon);
                 return token;
             } else if (character == ',') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.virgula);
+                token.setClasse(Class.comma);
                 return token;
             } else if (character == '+') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.operadorSoma);
+                token.setClasse(Class.sumOperator);
                 return token;
             } else if (character == '-') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.operadorSubtracao);
+                token.setClasse(Class.subtractOperator);
                 return token;
             } else if (character == '*') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.operadorMultiplicacao);
+                token.setClasse(Class.multiplyOperator);
                 return token;
             } else if (character == '/') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.operadorDivisao);
+                token.setClasse(Class.divisionOperator);
                 return token;
             } else if (character == '>') {
                 token = new Token(line, column);
@@ -182,9 +204,9 @@ public class Lexico {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Classe.operadorMaiorIgual);
+                    token.setClasse(Class.greaterEqualOperator);
                 } else {
-                    token.setClasse(Classe.operadorMaior);
+                    token.setClasse(Class.greaterOperator);
                 }
             } else if (character == ':') {
                 token = new Token(line, column);
@@ -195,9 +217,9 @@ public class Lexico {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Classe.atribuicao);
+                    token.setClasse(Class.allocation);
                 } else {
-                    token.setClasse(Classe.doisPontos);
+                    token.setClasse(Class.colon);
                 }
                 return token;
             } else if (character == '<') {
@@ -209,14 +231,14 @@ public class Lexico {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Classe.operadorMenorIgual);
+                    token.setClasse(Class.lesserEqualOperator);
                 } else if (character == '>') {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Classe.operadorDiferente);
+                    token.setClasse(Class.distinctOperator);
                 } else {
-                    token.setClasse(Classe.operadorMenor);
+                    token.setClasse(Class.lessesOperator);
                 }
                 return token;
             } else if (character == '=') {
@@ -224,7 +246,7 @@ public class Lexico {
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Classe.atribuicao);
+                token.setClasse(Class.equalOperator);
                 return token;
             } else {
                 System.err.println("Erro na linha " + line + " e coluna " + column + ": caracter inválido");
@@ -232,13 +254,6 @@ public class Lexico {
             }
 
         } while (character != 65535);
-        return new Token(line, column, Classe.EOF);
-        // } else if (Character.isWhitespace(character)) {
-        // System.out.println("Espaço");
-        // } else if (character == '.') {
-        // System.out.println("Ponto");
-        // } else {
-        // System.out.println("Outra coisa: " + character);
-        // }return token;
+        return new Token(line, column, Class.EOF);
     }
 }

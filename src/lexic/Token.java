@@ -1,19 +1,19 @@
-package lexico;
+package lexic;
 
 public class Token {
     private int line;
     private int column;
-    private Classe classe;
-    private Valor valor;
+    private Class classe;
+    private Value value;
 
-    public Token(int line, int column, Classe classe, Valor valor) {
+    public Token(int line, int column, Class classe, Value value) {
         this.line = line;
         this.column = column;
         this.classe = classe;
-        this.valor = valor;
+        this.value = value;
     }
 
-    public Token(int line, int column, Classe classe) {
+    public Token(int line, int column, Class classe) {
         this.line = line;
         this.column = column;
         this.classe = classe;
@@ -41,24 +41,24 @@ public class Token {
         this.column = column;
     }
 
-    public Classe getClasse() {
+    public Class getClasse() {
         return classe;
     }
 
-    public void setClasse(Classe classe) {
+    public void setClasse(Class classe) {
         this.classe = classe;
     }
 
-    public Valor getValor() {
-        return valor;
+    public Value getValue() {
+        return value;
     }
 
-    public void setValor(Valor valor) {
-        this.valor = valor;
+    public void setValue(Value value) {
+        this.value = value;
     }
 
     public String toString() {
-        return "Token [line=" + line + ", column=" + column + ", classe=" + classe + ", valor=" + valor + "]";
+        return "Token [line=" + line + ", column=" + column + ", classe=" + classe + ", valor=" + value + "]";
     }
 
 }
