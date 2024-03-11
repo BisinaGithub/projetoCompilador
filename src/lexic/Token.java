@@ -3,20 +3,20 @@ package lexic;
 public class Token {
     private int line;
     private int column;
-    private Class classe;
+    private Type type;
     private Value value;
 
-    public Token(int line, int column, Class classe, Value value) {
+    public Token(int line, int column, Type type, Value value) {
         this.line = line;
         this.column = column;
-        this.classe = classe;
+        this.type = type;
         this.value = value;
     }
 
-    public Token(int line, int column, Class classe) {
+    public Token(int line, int column, Type type) {
         this.line = line;
         this.column = column;
-        this.classe = classe;
+        this.type = type;
     }
 
     public Token(int line, int column) {
@@ -25,28 +25,28 @@ public class Token {
 
     }
 
-    public int getline() {
+    public int getLine() {
         return line;
     }
 
-    public void setline(int line) {
+    public void setLine(int line) {
         this.line = line;
     }
 
-    public int getcolumn() {
+    public int getColumn() {
         return column;
     }
 
-    public void setcolumn(int column) {
+    public void setColumn(int column) {
         this.column = column;
     }
 
-    public Class getClasse() {
-        return classe;
+    public Type getType() {
+        return type;
     }
 
-    public void setClasse(Class classe) {
-        this.classe = classe;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Value getValue() {
@@ -58,7 +58,7 @@ public class Token {
     }
 
     public String toString() {
-        return "Token [line=" + line + ", column=" + column + ", classe=" + classe + ", valor=" + value + "]";
+        return "Token [line=" + line + ", column=" + column + ", type=" + type + ", valor=" + value + "]";
     }
 
 }

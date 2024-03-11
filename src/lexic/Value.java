@@ -18,11 +18,11 @@ public class Value {
         this.stringValue = stringValue;
     }
 
-    public int getintegerValue() {
+    public int getIntegerValue() {
         return integerValue;
     }
 
-    public String getstringValue() {
+    public String getStringValue() {
         return stringValue;
     }
     public String toString() {

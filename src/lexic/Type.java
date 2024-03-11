@@ -1,6 +1,6 @@
 package lexic;
 
-public enum Class {
+public enum Type {
     identifier,
     reservedWord,
     String,

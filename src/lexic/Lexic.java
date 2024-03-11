@@ -64,7 +64,7 @@ public class Lexic {
         do {
             lexeme.setLength(0);
             if (character == 65535) {
-                return new Token(line, column, Class.EOF);
+                return new Token(line, column, Type.EOF);
             } else if (character == '{') {
                 character = nextChar();
                 column++;
@@ -102,7 +102,7 @@ public class Lexic {
                 }
                 character = nextChar();
                 column++;
-                token.setClasse(Class.String);
+                token.setType(Type.String);
                 token.setValue(new Value(lexeme.toString()));
                 return token;
             } else if (Character.isLetter(character)) {
@@ -116,10 +116,10 @@ public class Lexic {
                     column++;
                 }
                 if (isReservedWord(lexeme.toString())) {
-                    token.setClasse(Class.reservedWord);
+                    token.setType(Type.reservedWord);
                     token.setValue(new Value(lexeme.toString()));
                 } else {
-                    token.setClasse(Class.identifier);
+                    token.setType(Type.identifier);
                     token.setValue(new Value(lexeme.toString()));
                 }
                 return token;
@@ -137,7 +137,7 @@ public class Lexic {
                     character = nextChar();
                     column++;
                 }
-                token.setClasse(Class.identifier);
+                token.setType(Type.identifier);
                 token.setValue(new Value(Integer.parseInt(lexeme.toString())));
                 return token;
             } else if (Character.isWhitespace(character)) {
@@ -151,49 +151,49 @@ public class Lexic {
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.dot);
+                token.setType(Type.dot);
                 return token;
             } else if (character == ';') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.semicolon);
+                token.setType(Type.semicolon);
                 return token;
             } else if (character == ',') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.comma);
+                token.setType(Type.comma);
                 return token;
             } else if (character == '+') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.sumOperator);
+                token.setType(Type.sumOperator);
                 return token;
             } else if (character == '-') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.subtractOperator);
+                token.setType(Type.subtractOperator);
                 return token;
             } else if (character == '*') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.multiplyOperator);
+                token.setType(Type.multiplyOperator);
                 return token;
             } else if (character == '/') {
                 token = new Token(line, column);
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.divisionOperator);
+                token.setType(Type.divisionOperator);
                 return token;
             } else if (character == '>') {
                 token = new Token(line, column);
@@ -204,9 +204,9 @@ public class Lexic {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Class.greaterEqualOperator);
+                    token.setType(Type.greaterEqualOperator);
                 } else {
-                    token.setClasse(Class.greaterOperator);
+                    token.setType(Type.greaterOperator);
                 }
             } else if (character == ':') {
                 token = new Token(line, column);
@@ -217,9 +217,9 @@ public class Lexic {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Class.allocation);
+                    token.setType(Type.allocation);
                 } else {
-                    token.setClasse(Class.colon);
+                    token.setType(Type.colon);
                 }
                 return token;
             } else if (character == '<') {
@@ -231,14 +231,14 @@ public class Lexic {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Class.lesserEqualOperator);
+                    token.setType(Type.lesserEqualOperator);
                 } else if (character == '>') {
                     lexeme.append(character);
                     character = nextChar();
                     column++;
-                    token.setClasse(Class.distinctOperator);
+                    token.setType(Type.distinctOperator);
                 } else {
-                    token.setClasse(Class.lessesOperator);
+                    token.setType(Type.lessesOperator);
                 }
                 return token;
             } else if (character == '=') {
@@ -246,7 +246,7 @@ public class Lexic {
                 lexeme.append(character);
                 character = nextChar();
                 column++;
-                token.setClasse(Class.equalOperator);
+                token.setType(Type.equalOperator);
                 return token;
             } else {
                 System.err.println("Erro na linha " + line + " e coluna " + column + ": caracter inválido");
@@ -254,6 +254,6 @@ public class Lexic {
             }
 
         } while (character != 65535);
-        return new Token(line, column, Class.EOF);
+        return new Token(line, column, Type.EOF);
     }
 }
