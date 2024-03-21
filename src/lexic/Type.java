@@ -1,25 +1,22 @@
 package lexic;
 
 public enum Type {
-    identifier,
-    reservedWord,
-    String,
-    integerNumber,
+    IDENTIFIER,
+    RESERVED_WORD,
+    STRING,
+    INTEGER_NUMBER,
     sumOperator,
     subtractOperator,
     multiplyOperator,
     divisionOperator,
     greaterOperator,
-    lessesOperator,
-
+    lesserOperator,
+    LEFT_PARENTHESES,
+    RIGHT_PARENTHESES,
     greaterEqualOperator,
     lesserEqualOperator,
-
     equalOperator, // =
     distinctOperator, // <>
-    andOperator, // and
-    orOperator, // or
-    notOperador, // not
     allocation, // :=
     semicolon, // :
     comma,

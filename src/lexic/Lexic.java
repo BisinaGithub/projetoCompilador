@@ -51,11 +51,11 @@ public class Lexic {
         List<String> reservedWords = new ArrayList<String>(Arrays.asList(
                 "and", "array", "begin", "case", "const",
                 "div", "do", "downto", "else", "end", "write",
-                "file", "for", "function", "goto", "if",
+                "file", "for", "function", "goto", "if", "false",
                 "in", "label", "mod", "nil", "not", "writeln",
                 "of", "or", "packed", "procedure", "program",
                 "record", "repeat", "set", "then", "to", "read",
-                "type", "until", "var", "while", "with",
+                "type", "until", "var", "while", "with", "true",
                 "integer", "real", "boolean", "char", "string"));
         return reservedWords.contains(lexeme);
     }
@@ -102,7 +102,7 @@ public class Lexic {
                 }
                 character = nextChar();
                 column++;
-                token.setType(Type.String);
+                token.setType(Type.STRING);
                 token.setValue(new Value(lexeme.toString()));
                 return token;
             } else if (Character.isLetter(character)) {
@@ -116,12 +116,26 @@ public class Lexic {
                     column++;
                 }
                 if (isReservedWord(lexeme.toString())) {
-                    token.setType(Type.reservedWord);
+                    token.setType(Type.RESERVED_WORD);
                     token.setValue(new Value(lexeme.toString()));
                 } else {
-                    token.setType(Type.identifier);
+                    token.setType(Type.IDENTIFIER);
                     token.setValue(new Value(lexeme.toString()));
                 }
+                return token;
+            }else if(character == '('){
+                token = new Token(line, column);
+                lexeme.append(character);
+                character = nextChar();
+                column++;
+                token.setType(Type.LEFT_PARENTHESES);
+                return token;
+            }else if(character == ')'){
+                token = new Token(line, column);
+                lexeme.append(character);
+                character = nextChar();
+                column++;
+                token.setType(Type.RIGHT_PARENTHESES);
                 return token;
             } else if (character == '\n') {
                 character = nextChar();
@@ -137,7 +151,7 @@ public class Lexic {
                     character = nextChar();
                     column++;
                 }
-                token.setType(Type.identifier);
+                token.setType(Type.IDENTIFIER);
                 token.setValue(new Value(Integer.parseInt(lexeme.toString())));
                 return token;
             } else if (Character.isWhitespace(character)) {
@@ -238,7 +252,7 @@ public class Lexic {
                     column++;
                     token.setType(Type.distinctOperator);
                 } else {
-                    token.setType(Type.lessesOperator);
+                    token.setType(Type.lesserOperator);
                 }
                 return token;
             } else if (character == '=') {
